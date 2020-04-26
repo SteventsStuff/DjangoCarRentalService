@@ -1,6 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
+from dummy_data import car_posts
 
 
 def index(request):
-    return HttpResponse('hello')
+    context = {
+        'posts': car_posts,
+        'title': 'kek'
+    }
+    return render(request, 'rental/index.html', context)
+
+
+def about(request):
+    context = {
+        'posts': car_posts,
+        'title': 'kek'
+    }
+    return render(request, 'rental/about.html', context)
