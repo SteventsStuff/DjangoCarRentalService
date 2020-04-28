@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 
 class Car(models.Model):
     title = models.CharField(null=True, blank=False, max_length=100, verbose_name='Title')
-    price_per_hour_usd = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Price per hours USD')  # todo: add validator
+    price_per_hour_usd = models.DecimalField(
+        null=False, blank=False, max_digits=7, decimal_places=2, verbose_name='Price per hours USD'
+    )  # todo: add validator
     color = models.CharField(max_length=20, null=True, blank=True, verbose_name='Color')
     description = models.TextField(null=True, blank=True, max_length=400, verbose_name='Description')
     car_took_counter = models.IntegerField(default=0,  verbose_name='Car was taken times')  # todo: add validator
@@ -55,7 +57,7 @@ class Driver(models.Model):
     first_name = models.CharField(null=True, blank=False, max_length=100, verbose_name='Title')
     second_name = models.CharField(null=True, blank=False, max_length=100, verbose_name='Title')
     work_experience = models.FloatField(null=False, blank=False)  # todo: add validator
-    price = models.DecimalField(null=False, blank=False, default=1.0)  # todo: add validator
+    price = models.DecimalField(null=False, blank=False, max_digits=7, decimal_places=2, default=1.0)  # todo: add validator
 
     def __str__(self):
         pass
