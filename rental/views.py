@@ -1,19 +1,17 @@
 from django.shortcuts import render
 
-from dummy_data import car_posts
+from .models import Car
 
 
 def index(request):
     context = {
-        'posts': car_posts,
-        'title': 'kek'
+        'posts': Car.objects.all(),
     }
     return render(request, 'rental/index.html', context)
 
 
 def about(request):
     context = {
-        'posts': car_posts,
         'title': 'kek'
     }
     return render(request, 'rental/about.html', context)
