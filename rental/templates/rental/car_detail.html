@@ -1,0 +1,23 @@
+{% extends 'rental/base.html' %}
+
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <small class="text-muted">{{ car.color }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ car.title }}</a></h2>
+            <h3><a class="article-title" href="#">{{ car.car_mark }}</a></h3>
+            <h3><a class="article-title" href="#">{{ car.price_per_hour_usd }}</a></h3>
+            <p class="article-content">{{ car.description }}</p>
+            <p class="article-content">{{ car.when_will_be_available|date:"F d, Y" }}</p>
+{#            {% if car.car_class == 'red' %}#}
+                <div>
+                    <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'car-update' car.id %}">Update</a>
+                    <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'car-delete' car.id %}">Delete</a>
+                </div>
+
+{#            {% endif %}#}
+        </div>
+    </article>
+{% endblock content %}
