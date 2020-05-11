@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -27,15 +28,18 @@ class Car(models.Model):
         to='CarClass', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Car class'
     )
 
-    # def __str__(self):
-    #     pass
+    def __str__(self):
+        return f'{self.pk}, {self.title}'
+
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'pk': self.pk})
 
 
 class CarMark(models.Model):
     title = models.CharField(null=True, blank=False, max_length=100, verbose_name='Title')
 
     def __str__(self):
-        return self.title
+        return f'{self.pk}, {self.title}'
 
 
 class CarClass(models.Model):
