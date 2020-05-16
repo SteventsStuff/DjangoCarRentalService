@@ -1,23 +1,19 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 
 
 def register(request):
-    """
-    Note about messages:
-        - message.debug
-        - message.info
-        - message.success
-        - message.warning
-        - message.error
-    """
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            customer_group = Group.objects.get(name='CustomerGroup')
+            user.groups.add(customer_group)
             messages.success(request, f'Your account has been created! You are now able to Login!')
             return redirect('login')
     else:
