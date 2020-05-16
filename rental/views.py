@@ -58,7 +58,11 @@ class CarCreateView(LoginRequiredMixin, CreateView):
 
 class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Car
-    fields = ['title', 'description']
+    fields = [
+        'title', 'image', 'price_per_hour_usd', 'description', 'color', 'car_took_counter', 'is_car_available',
+        'layout', 'car_condition', 'car_mark', 'car_class'
+    ]
+    template_name = 'rental/cars/edit/car_form.html'
 
     def test_func(self):
         return True
