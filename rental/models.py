@@ -41,6 +41,10 @@ class CarMark(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+    @staticmethod
+    def get_absolute_url():
+        return reverse('rental-home')
+
 
 class CarClass(models.Model):
     title = models.CharField(null=True, blank=False, max_length=100, verbose_name='Title')
@@ -48,12 +52,20 @@ class CarClass(models.Model):
     def __str__(self):
         return self.title
 
+    @staticmethod
+    def get_absolute_url():
+        return reverse('rental-home')
+
 
 class CarCondition(models.Model):
     condition = models.CharField(null=True, blank=False, max_length=100, verbose_name='Condition')
 
     def __str__(self):
         return self.condition
+
+    @staticmethod
+    def get_absolute_url():
+        return reverse('rental-home')
 
 
 class Driver(models.Model):
