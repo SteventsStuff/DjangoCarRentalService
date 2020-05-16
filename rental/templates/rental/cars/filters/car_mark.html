@@ -2,21 +2,34 @@
 
 {% block content %}
     <h1 class="mb-3">Cars by {{ view.kwargs.mark_title.title }} ({{ page_obj.paginator.count }})</h1>
-    {% for post in posts %}
+    {% for car in cars %}
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
-{#                    <a class="mr-2" href="#">{{ post.author }}</a>#}
-                    <small class="text-muted">{{ post.color }}</small>
+                    <a class="mr-2" href="#">{{ car.car_condition }}</a>
+                    <small class="text-muted">{{ car.color }}</small>
                 </div>
-                <h2><a class="article-title" href="{% url 'car-detail' post.id %}">{{ post.title }}</a></h2>
-                <h3><a class="article-title" href="#">{{ post.car_mark }}</a></h3>
-                <h3><a class="article-title" href="#">{{ post.price_per_hour_usd }}</a></h3>
-                <p class="article-content">{{ post.description }}</p>
-                <p class="article-content">{{ post.when_will_be_available|date:"F d, Y"}}</p>
+                <div>
+                    <a href="{% url 'car-detail' car.id %}"><img src="../../../../media/tesla.jpg" alt="no img" height="200"></a>
+                </div>
+                <div>
+                    <h2><a class="article-title" href="{% url 'car-detail' car.id %}">{{ car.title }}</a></h2>
+                    <p><a class="article-title" href="{% url 'car-mark' car.car_mark.title %}">{{ car.car_mark.title }}</a></p>
+                    <p>Price: {{ car.price_per_hour_usd }}<span class="badge badge-light">USD</span></p>
+                    <p class="article-content">{{ car.description }}</p>
+                    <p class="article-content">{{ car.is_driver_available }}</p>
+                    <p class="article-content">{{ car.when_will_be_available|date:"F d, Y" }}</p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <div>
+                    <a class="btn btn-success" href="">Ride</a>
+                    <a class="btn btn-outline-info" href="{% url 'car-detail' car.id  %}">Details</a>
+                </div>
             </div>
         </article>
     {% endfor %}
+
+    {#    PAGINTAION   #}
     {% if is_paginated %}
         {% if page_obj.has_previous %}
             <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
