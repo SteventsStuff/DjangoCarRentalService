@@ -22,7 +22,6 @@ class CarMarkListView(ListView):
 
     def get_queryset(self):
         mark_object = get_object_or_404(CarMark, title=self.kwargs.get('mark_title'))
-        print(mark_object.title, 'aaaaaaaaaaaa')
         return Car.objects.filter(car_mark__title=mark_object.title)
 
 
