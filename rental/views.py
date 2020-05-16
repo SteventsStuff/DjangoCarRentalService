@@ -7,7 +7,7 @@ from .models import Car, CarMark
 
 class CarRentalListView(ListView):
     model = Car
-    template_name = 'rental/catalog.html'
+    template_name = 'rental/cars/cars-catalog.html'
     context_object_name = 'cars'
     ordering = ['price_per_hour_usd']
     paginate_by = 5
@@ -15,8 +15,8 @@ class CarRentalListView(ListView):
 
 class CarMarkListView(ListView):
     model = Car
-    template_name = 'rental/car_mark.html'
-    context_object_name = 'posts'
+    template_name = 'rental/cars/filters/car_mark.html'
+    context_object_name = 'cars'
     ordering = ['title']
     paginate_by = 5
 
@@ -29,12 +29,14 @@ class CarMarkListView(ListView):
 class CarDetailView(DetailView):
     model = Car
     context_object_name = 'car'
+    template_name = 'rental/cars/filters/car_detail.html'
 
 
 class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Car
     context_object_name = 'car'
     success_url = '/'
+    template_name = 'rental/cars/edit/car_confirm_delete.html'
 
     def test_func(self):
         return True
@@ -42,7 +44,11 @@ class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class CarCreateView(LoginRequiredMixin, CreateView):
     model = Car
-    fields = ['title', 'description']
+    fields = [
+        'title', 'image', 'price_per_hour_usd', 'description', 'color', 'car_took_counter', 'is_car_available',
+        'layout', 'car_condition', 'car_mark', 'car_class'
+    ]
+    template_name = 'rental/cars/edit/car_form.html'
 
     # def form_valid(self, form):
     #     # form.instance.
