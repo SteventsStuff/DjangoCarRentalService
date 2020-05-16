@@ -1,10 +1,12 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Car, CarMark, Driver
+from .models import Car, CarMark, CarCondition, CarClass, Driver
 
 
+# cars
 class CarRentalListView(ListView):
     model = Car
     template_name = 'rental/cars/cars-catalog.html'
@@ -61,7 +63,7 @@ class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         'title', 'image', 'price_per_hour_usd', 'description', 'color', 'car_took_counter', 'is_car_available',
         'layout', 'car_condition', 'car_mark', 'car_class'
     ]
-    template_name = 'rental/cars/edit/car_form.html'
+    template_name = 'rental/cars/edit/car_update_form.html'
 
     def test_func(self):
         return True
@@ -76,6 +78,29 @@ class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     #     pass
 
 
+# additional mark, condition, class edit views
+class CarMarkCreateView(LoginRequiredMixin, CreateView):
+    model = CarMark
+    fields = ['title']
+    template_name = 'rental/cars/edit/car_mark_form.html'
+
+    def form_invalid(self, form):
+        return HttpResponse("Data in form is invalid!")
+
+
+class CarConditionCreateView(LoginRequiredMixin, CreateView):
+    model = CarCondition
+    fields = ['condition']
+    template_name = 'rental/cars/edit/car_condition_form.html'
+
+
+class CarClassCreateView(LoginRequiredMixin, CreateView):
+    model = CarClass
+    fields = ['title']
+    template_name = 'rental/cars/edit/car_mark_form.html'
+
+
+# drivers
 class DriversListView(ListView):
     model = Driver
     template_name = 'rental/drivers/drivers-catalog.html'
