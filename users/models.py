@@ -6,6 +6,8 @@ from PIL import Image
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    phone_number = models.CharField(null=True, blank=True, max_length=20, verbose_name='Phone number')
+    passport_number = models.CharField(null=True, blank=True, max_length=8, verbose_name='Passport Number')  # todo: add validation, UNIQUE
 
     def __str__(self):
         return f'{self.user.username} Profile'
