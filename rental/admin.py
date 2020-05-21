@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Car, CarMark, CarClass, CarCondition, Driver
+from .models import Car, CarMark, CarClass, CarCondition, Driver, Order
 
 
 class CarAdmin(admin.ModelAdmin):
@@ -41,8 +41,19 @@ class DriverAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'second_name', 'work_experience', 'price')
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk', 'user', 'car', 'driver', 'total_price', 'total_hours', 'is_approved',  'is_pending', 'is_canceled',
+        'start_date', 'end_date'
+    )
+    list_display_links = ('user', 'car', 'driver')
+    list_filter = ('car', 'driver')
+    search_fields = ('user', 'car', 'driver', 'start_date', 'end_date')
+
+
 admin.site.register(Car, CarAdmin)
 admin.site.register(CarMark, CarMarkAdmin)
 admin.site.register(CarClass, CarClassAdmin)
 admin.site.register(CarCondition, CarConditionAdmin)
 admin.site.register(Driver, DriverAdmin)
+admin.site.register(Order, OrderAdmin)
