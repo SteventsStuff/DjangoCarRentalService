@@ -5,8 +5,8 @@ from .models import Car, CarMark, CarClass, CarCondition, Driver, Order
 
 class CarAdmin(admin.ModelAdmin):
     list_display = (
-        'pk', 'title', 'price_per_hour_usd', 'color', 'description', 'car_took_counter', 'is_car_available',
-        'when_will_be_available', 'last_took_date', 'layout', 'car_condition', 'car_mark', 'car_class',
+        'pk', 'title', 'price_per_hour_usd', 'color', 'description', 'is_car_available', 'layout', 'car_condition',
+        'car_mark', 'car_class',
     )
     list_display_links = ('title',)
     list_filter = ('price_per_hour_usd', 'is_car_available', 'car_condition', 'car_mark', 'car_class')
