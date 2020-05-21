@@ -1,0 +1,36 @@
+{% extends 'rental/base.html' %}
+{% load group_filter %}
+{% block content %}
+    {% for order in orders %}
+        <article class="media content-section">
+        <div class="media-body">
+            <div>
+                <a href="{% url 'car-detail' order.car.id %}"><img src="{{ order.car.image.url }}" alt="no img" height="200"></a>
+            </div>
+            <div>
+                <h2><a href="{% url 'order-detail' order.id %}">Order #{{ order.id }}</a></h2>
+                <p class="article-content"><a href="{% url 'car-detail' order.car.id%}">Car: {{ order.car.title }}</a></p>
+                <p class="article-content"><a href="{% url 'driver-detail' order.driver.id%}">Driver: {{ order.driver.first_name }} {{ order.driver.second_name }}</a></p>
+                <p class="article-content">Customer: {{ order.user }}</p>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div>
+                {% if user.is_authenticated and user|has_group:'ManagerGroup' or user|has_group:'ServiceAdminGroup'%}
+                    {% if order.is_approved %}
+                        <div class="alert alert-success">Approved order</div>
+                    {% elif order.is_pending %}
+                        <div class="alert alert-primary">Order is pending...</div>
+                    {% elif order.is_canceled %}
+                        <div class="alert alert-danger">Order is canceled</div>
+                    {% endif %}
+                    {% if not order.is_approved %}
+                        <a class="btn btn-success" href="{% url 'order-approve' order.id %}">Approve Order</a>
+                    {% endif %}
+                    <a class="btn btn-danger" href="{% url 'order-cancel' order.id%}">Cancel Order</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </article>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'rental/base.html' %}
+{% load group_filter %}
+{% block content %}
+    <article class="media content-section">
+        {% if user.is_authenticated and user|has_group:'ManagerGroup' or user|has_group:'ServiceAdminGroup'%}
+            <div class="article-metadata">
+                <div>
+                    <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'driver-update' driver.id %}">Update</a>
+                    <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'driver-delete' driver.id %}">Delete</a>
+                </div>
+            </div>
+        {% endif %}
+        <div>
+            <a href="{% url 'driver-detail' driver.id %}"><img src="{{ driver.image.url }}" alt="no img" height="200"></a>
+        </div>
+        <div>
+            <h2><a class="article-title" href="{% url 'driver-detail' driver.id %}">{{ driver.first_name }} {{ driver.second_name }}</a></h2>
+            <p>Price: {{ driver.price }}<span class="badge badge-light">USD</span></p>
+            <p class="article-content">Work experience: {{ driver.work_experience }}</p>
+        </div>
+        <div class="dropdown-divider"></div>
+    </article>
+{% endblock content %}

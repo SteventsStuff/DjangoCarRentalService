@@ -1,0 +1,37 @@
+{% extends 'rental/base.html' %}
+{% load group_filter %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            {% if user.is_authenticated and user|has_group:'ManagerGroup' or user|has_group:'ServiceAdminGroup'%}
+                <div class="article-metadata">
+                    <div>
+                        <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'car-update' car.id %}">Update</a>
+                        <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'car-delete' car.id %}">Delete</a>
+                    </div>
+                </div>
+            {% endif %}
+            <div>
+                <a href="{% url 'car-detail' car.id %}"><img src="{{ car.image.url }}" alt="no img" height="200"></a>
+            </div>
+            <div>
+                <h2><a class="article-title" href="{% url 'car-detail' car.id %}">{{ car.title }}</a></h2>
+                <p><a class="article-title" href="{% url 'car-mark' car.car_mark.title %}">Mark: {{ car.car_mark.title }}</a>
+                <p class="article-content">Class: {{ car.car_class.title }}</p>
+                <p class="article-content">Price: {{ car.price_per_hour_usd }}<span class="badge badge-light">USD</span></p>
+                <p class="article-content">Description: {{ car.description }}</p>
+                <p class="article-content">Color: {{ car.color }}</p>
+                <p class="article-content">Layout: {{ car.layout }}</p>
+                <p class="article-content">Condition: {{ car.car_condition }}</p>
+                <p class="article-content">Car was took: {{ car.car_took_counter }} time/s</p>
+                <p class="article-content">Car availability: {{ car.is_car_available }}</p>
+                <p class="article-content">Car will be available: {{ car.when_will_be_available|date:"F d, Y" }}</p>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div>
+                <a class="btn btn-success" href="{% url 'order-car' car.id%}">Ride</a>
+            </div>
+        </div>
+
+    </article>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'rental/base.html' %}
+
+{% block content %}
+    <h1>About</h1>
+    <article class="content-section">
+        <h3>Car rental</h3>
+        <p>There is a list of Cars in the system for which it is necessary to implement:</p>
+        <ul>
+            <li>selection by brand;</li>
+            <li>selection by quality class;</li>
+            <li>sorting by name.</li>
+        </ul>
+        <p></p>
+
+        <p>The client does registration in the system, selects a car and makes a rental order. An unregistered customer cannot place an order.</p>
+        <p>In the order data, the client indicates the passport data, the option 'with driver' / 'without driver', rental period.</p>
+        <p>The system generates a bill that the customer pays.</p>
+        <p>The manager reviews the order and may reject it, indicating the reason.</p>
+        <p>The manager also records the return of the car, in case of damage being done to the car, bills through the system for repair.</p>
+        <p>The system administrator owns the rights:</p>
+        <ul>
+            <li>adding, deleting cars, editing information about cars;</li>
+            <li>blocking / unblocking users;</li>
+            <li>registration of managers in the system.</li>
+        </ul>
+
+    </article>
+{% endblock content %}

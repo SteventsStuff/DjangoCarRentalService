@@ -1,0 +1,39 @@
+{% extends 'rental/base.html' %}
+{% load group_filter %}
+{% block content %}
+    <article class="media content-section">
+    <div class="media-body">
+        <div>
+            <a href="{% url 'car-detail' order.car.id %}"><img src="{{ order.car.image.url }}" alt="no img" height="200"></a>
+        </div>
+        <div>
+            <h2>Order #{{ order.pk }}</h2>
+            <p class="article-content"><a href="{% url 'car-detail' order.car.id%}">Car: {{ order.car.title }}</a></p>
+            <p class="article-content"><a href="{% url 'driver-detail' order.driver.id%}">Driver: {{ order.driver.first_name }} {{ order.driver.second_name }}</a></p>
+            <p class="article-content">Customer: {{ order.user }}</p>
+            <p class="article-content">Total price: {{ order.total_price }}<span class="badge badge-light">USD</span></p>
+            <p class="article-content">Color: {{ order.car.color }}</p>
+            <p class="article-content">Layout: {{ order.car.layout }}</p>
+            <p class="article-content">Condition: {{ order.car.car_condition }}</p>
+            <p class="article-content">Car availability: {{ order.car.is_car_available }}</p>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div>
+            {% if user.is_authenticated and user|has_group:'ManagerGroup' or user|has_group:'ServiceAdminGroup'%}
+                {% if order.is_approved %}
+                    <div class="alert alert-success">Approved order</div>
+                {% elif order.is_pending and not order.is_approved %}
+                    <div class="alert alert-primary">Order is pending...</div>
+                {% elif order.is_canceled %}
+                    <div class="alert alert-danger">Order is canceled</div>
+                {% endif %}
+                {% if not order.is_approved %}
+                        <a class="btn btn-success" href="{% url 'order-approve' order.id %}">Approve Order</a>
+                {% endif %}
+                <a class="btn btn-danger" href="{% url 'order-cancel' order.id%}">Cancel Order</a>
+            {% endif %}
+        </div>
+    </div>
+
+</article>
+{% endblock %}

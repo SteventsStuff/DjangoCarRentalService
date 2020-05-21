@@ -1,0 +1,38 @@
+{% extends 'rental/base.html' %}
+{% load group_filter %}
+{% block content %}
+    {% for order in orders %}
+        <article class="media content-section">
+        <div class="media-body">
+            <div>
+                <a href="{% url 'car-detail' order.car.id %}"><img src="{{ order.car.image.url }}" alt="no img" height="200"></a>
+            </div>
+            <div>
+                <h2>Order #{{ order.pk }}</h2>
+                <p class="article-content"><a href="{% url 'car-detail' order.car.id%}">Car: {{ order.car.title }}</a></p>
+                <p class="article-content"><a href="{% url 'driver-detail' order.driver.id%}">Driver: {{ order.driver.first_name }} {{ order.driver.second_name }}</a></p>
+                <p class="article-content">Total price: {{ order.total_price }}<span class="badge badge-light">USD</span></p>
+                <p class="article-content">Color: {{ order.car.color }}</p>
+                <p class="article-content">Layout: {{ order.car.layout }}</p>
+                <p class="article-content">Condition: {{ order.car.car_condition }}</p>
+                <p class="article-content">Car availability: {{ order.car.is_car_available }}</p>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div>
+                {% if order.is_approved %}
+                    <div class="alert alert-success">Your orders is approved by manager</div>
+                {% elif order.is_pending%}
+                    <div class="alert alert-secondary">Your order is pending...</div>
+                {% elif order.is_canceled %}
+                    <div class="alert alert-danger">Sorry, but your order was cancelled</div>
+                    <div>Reason: {{ order.cancel_description }}</div>
+                {% endif %}
+                {% if not order.is_approved %}
+                    <a class="btn btn-danger" href="{% url 'profile-order-delete' order.id%}">Cancel Order</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </article>
+    {% endfor %}
+{% endblock %}
