@@ -1,7 +1,6 @@
 from django.db import models
-from django.utils import timezone
 from django.urls import reverse
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 
 # todo: use aggregation for index page like: we have N cars, M sutisfied customers, etc
@@ -13,10 +12,7 @@ class Car(models.Model):
     )  # todo: add validator
     color = models.CharField(max_length=20, null=True, blank=True, verbose_name='Color')
     description = models.TextField(null=True, blank=True, max_length=400, verbose_name='Description')
-    car_took_counter = models.IntegerField(default=0,  verbose_name='Car was taken times')  # todo: add validator
     is_car_available = models.BooleanField(default=False, verbose_name='Is car available')
-    when_will_be_available = models.DateTimeField(default=timezone.now, verbose_name='When car will be available')
-    last_took_date = models.DateTimeField(default=timezone.now, verbose_name='Last took date')
     layout = models.CharField(max_length=100, null=True, blank=True, verbose_name='Layout')
     car_condition = models.ForeignKey(
         to='CarCondition', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Car condition'
@@ -29,7 +25,7 @@ class Car(models.Model):
     )
 
     def __str__(self):
-        return f'{self.pk}, {self.title}'
+        return f'{self.title}'
 
     def get_absolute_url(self):
         return reverse('car-detail', kwargs={'pk': self.pk})
@@ -71,13 +67,15 @@ class CarCondition(models.Model):
 class Driver(models.Model):
     first_name = models.CharField(null=True, blank=False, max_length=100, verbose_name='First name')
     second_name = models.CharField(null=True, blank=False, max_length=100, verbose_name='Last name')
+    image = models.ImageField(default='default.jpg', upload_to='driver_pics', verbose_name='Driver image')
     work_experience = models.FloatField(null=False, blank=False, verbose_name='Work Experience')  # todo: add validator
     price = models.DecimalField(
         null=False, blank=False, max_digits=7, decimal_places=2, default=1.0, verbose_name='Price'
     )  # todo: add validator
 
     def __str__(self):
-        return f'{self.second_name}, {self.first_name}, {self.work_experience}, {self.price}'
+        return f'{self.second_name}, {self.first_name}, {self.price}$'
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
