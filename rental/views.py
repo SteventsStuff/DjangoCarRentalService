@@ -1,9 +1,11 @@
+import decimal
+
 from django.http.response import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Car, CarMark, CarCondition, CarClass, Driver
+from .models import Car, CarMark, CarCondition, CarClass, Driver, Order
 
 
 # cars
@@ -46,15 +48,10 @@ class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class CarCreateView(LoginRequiredMixin, CreateView):
     model = Car
     fields = [
-        'title', 'image', 'price_per_hour_usd', 'description', 'color', 'car_took_counter', 'is_car_available',
-        'layout', 'car_condition', 'car_mark', 'car_class'
+        'title', 'image', 'price_per_hour_usd', 'description', 'color', 'is_car_available', 'layout', 'car_condition',
+        'car_mark', 'car_class'
     ]
     template_name = 'rental/cars/edit/car_form.html'
-
-    # def form_valid(self, form):
-    #     # form.instance.
-    #     # return super().form_valid(form)
-    #     pass
 
 
 class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -67,15 +64,6 @@ class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return True
-        # car = self.get_object()
-        # if self.request.user == car.author:
-        #     return True
-        # return False
-
-    # def form_valid(self, form):
-    #     # form.instance.
-    #     # return super().form_valid(form)
-    #     pass
 
 
 # additional mark, condition, class edit views
@@ -119,11 +107,6 @@ class DriverCreateView(LoginRequiredMixin, CreateView):
     fields = ['first_name', 'second_name', 'work_experience', 'price']
     template_name = 'rental/cars/edit/car_form.html'
 
-    # def form_valid(self, form):
-    #     # form.instance.
-    #     # return super().form_valid(form)
-    #     pass
-
 
 class DriverUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Driver
@@ -132,15 +115,6 @@ class DriverUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return True
-        # car = self.get_object()
-        # if self.request.user == car.author:
-        #     return True
-        # return False
-
-    # def form_valid(self, form):
-    #     # form.instance.
-    #     # return super().form_valid(form)
-    #     pass
 
 
 class DriverDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
