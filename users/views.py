@@ -1,9 +1,34 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DeleteView
 
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
+from rental.models import Order
+
+
+class ProfileOrdersListView(LoginRequiredMixin, ListView):
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'users/profile_orders.html'
+    ordering = '-pk'
+    paginate_by = 5
+
+    def get_queryset(self):
+        orders = Order.objects.filter(user=self.request.user)
+        return orders
+
+
+class ProfileOrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Order
+    context_object_name = 'order'
+    success_url = '/'
+    template_name = 'users/profile_order_delete.html'
+
+    def test_func(self):
+        return True
 
 
 def register(request):
