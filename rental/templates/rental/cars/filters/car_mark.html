@@ -10,7 +10,7 @@
                     <small class="text-muted">{{ car.color }}</small>
                 </div>
                 <div>
-                    <a href="{% url 'car-detail' car.id %}"><img src="../../../../media/tesla.jpg" alt="no img" height="200"></a>
+                    <a href="{% url 'car-detail' car.id %}"><img src="{{ car.image.url }}" alt="no img" height="200"></a>
                 </div>
                 <div>
                     <h2><a class="article-title" href="{% url 'car-detail' car.id %}">{{ car.title }}</a></h2>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="dropdown-divider"></div>
                 <div>
-                    <a class="btn btn-success" href="">Ride</a>
+                    <a class="btn btn-success" href="{% url 'order-car' car.id%}">Ride</a>
                     <a class="btn btn-outline-info" href="{% url 'car-detail' car.id  %}">Details</a>
                 </div>
             </div>
