@@ -153,6 +153,79 @@ class DriverDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return True
 
 
+# order stuff
+class OrderCarCreateView(LoginRequiredMixin, CreateView):
+    model = Order
+    template_name = 'rental/orders/order_car_form.html'
+    fields = ['user', 'car', 'driver', 'start_date', 'end_date']
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['user'] = self.request.user
+        initial['car'] = Car.objects.get(pk=self.request.resolver_match.kwargs['pk'])
+        initial['driver'] = Driver.objects.get(first_name='No')
+        return initial
+
+    def form_valid(self, form):
+        if form.cleaned_data['car'].is_car_available and self.request.user == form.cleaned_data['user']:
+            days_td = form.cleaned_data['end_date'] - form.cleaned_data['start_date']
+            days = days_td.days if days_td.days >= 1 else 1
+            total_time = 24 * days
+            form.instance.total_hours = total_time
+            form.instance.total_price = (
+                decimal.Decimal(total_time * 0.3) * form.instance.car.price_per_hour_usd
+                + form.instance.driver.price * decimal.Decimal(total_time * 0.3)
+            )
+            return super().form_valid(form)
+        else:
+            return HttpResponse('invalid data')
+
+
+class OrdersCatalogHistoryListView(LoginRequiredMixin, ListView):
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'rental/orders/orders_catalog.html'
+    ordering = '-pk'
+    paginate_by = 5
+
+
+class OrdersCatalogPendingListView(LoginRequiredMixin, ListView):
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'rental/orders/orders_catalog.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Order.objects.filter(is_pending=True)
+
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    context_object_name = 'order'
+    template_name = 'rental/orders/order_detail.html'
+
+
+class OrderCancelUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Order
+    fields = ['cancel_description']
+    template_name = 'rental/orders/edit/order_cancel.html'
+
+    def test_func(self):
+        order = Order.objects.get(pk=self.kwargs['pk'])
+        order.is_pending = False
+        order.is_canceled = True
+        order.save()
+        return True
+
+
+def approve_customer_order(request, pk: int):
+    order = Order.objects.get(pk=pk)
+    order.is_pending = False
+    order.is_approved = True
+    order.save()
+    return redirect('orders-list-all')
+
+
 def home(request):
     return render(request, 'rental/home.html')
 
