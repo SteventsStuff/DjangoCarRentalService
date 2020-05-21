@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from .models import Car, CarMark, CarClass, CarCondition, Driver
+from .models import Car, CarMark, CarClass, CarCondition, Driver, Order
 
 
 class CarAdmin(admin.ModelAdmin):
     list_display = (
-        'pk', 'title', 'price_per_hour_usd', 'color', 'description', 'car_took_counter', 'is_car_available',
-        'when_will_be_available', 'last_took_date', 'layout', 'car_condition', 'car_mark', 'car_class',
+        'pk', 'title', 'price_per_hour_usd', 'color', 'description', 'is_car_available', 'layout', 'car_condition',
+        'car_mark', 'car_class',
     )
     list_display_links = ('title',)
     list_filter = ('price_per_hour_usd', 'is_car_available', 'car_condition', 'car_mark', 'car_class')
@@ -41,8 +41,19 @@ class DriverAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'second_name', 'work_experience', 'price')
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk', 'user', 'car', 'driver', 'total_price', 'total_hours', 'is_approved',  'is_pending', 'is_canceled',
+        'start_date', 'end_date'
+    )
+    list_display_links = ('user', 'car', 'driver')
+    list_filter = ('car', 'driver')
+    search_fields = ('user', 'car', 'driver', 'start_date', 'end_date')
+
+
 admin.site.register(Car, CarAdmin)
 admin.site.register(CarMark, CarMarkAdmin)
 admin.site.register(CarClass, CarClassAdmin)
 admin.site.register(CarCondition, CarConditionAdmin)
 admin.site.register(Driver, DriverAdmin)
+admin.site.register(Order, OrderAdmin)

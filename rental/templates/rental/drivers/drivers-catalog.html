@@ -4,16 +4,12 @@
     {% for driver in drivers %}
         <article class="media content-section">
             <div>
-                <a href="{% url 'driver-detail' driver.id %}"><img src="../../../../media/default.jpg" alt="no img" height="200"></a>
+                <a href="{% url 'driver-detail' driver.id %}"><img src="{{ driver.image.url }}" alt="no-img" height="200"></a>
             </div>
             <div>
                 <h2><a class="article-title" href="{% url 'driver-detail' driver.id %}">{{ driver.first_name }} {{ driver.second_name }}</a></h2>
                 <p>Price: {{ driver.price }}<span class="badge badge-light">USD</span></p>
                 <p class="article-content">Work experience: {{ driver.work_experience }}</p>
-            </div>
-            <div class="dropdown-divider"></div>
-            <div>
-                <a class="btn btn-success" href="">Hire</a>
             </div>
         </article>
     {% endfor %}

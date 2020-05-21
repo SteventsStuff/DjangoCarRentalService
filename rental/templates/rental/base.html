@@ -47,10 +47,15 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     {% if user|has_group:'ManagerGroup' %}
-                                        <a class="dropdown-item" href="{% url 'rental-about' %}">Customers Orders <span class="badge badge-light">4</span></a>
+                                        <a class="dropdown-item" href="{% url 'orders-list-pending' %}">Customers Orders (Pending)</a>
+                                        <a class="dropdown-item" href="{% url 'orders-list-all' %}">Customers Orders (History)</a>
                                         <div class="dropdown-divider"></div>
                                     {% endif %}
                                     <a class="dropdown-item" href="{% url 'car-create' %}">New Car</a>
+                                    <a class="dropdown-item" href="{% url 'car-mark-create' %}">New Car Mark</a>
+                                    <a class="dropdown-item" href="{% url 'car-class-create' %}">New Car Class</a>
+                                    <a class="dropdown-item" href="{% url 'car-condition-create' %}">New Car Condition</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url 'driver-create' %}">New Driver</a>
                                 </div>
                             </li>
@@ -62,7 +67,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if user|has_group:'CustomerGroup' %}
-                                    <a class="dropdown-item" href="{% url 'rental-about' %}">My Orders <span class="badge badge-light">0</span></a>
+                                    <a class="dropdown-item" href="{% url 'profile-orders' user.id%}">My Orders</a>
                                 {% endif %}
                                 <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                                 <div class="dropdown-divider"></div>
