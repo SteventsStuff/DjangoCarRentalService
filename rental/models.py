@@ -79,6 +79,23 @@ class Driver(models.Model):
     def __str__(self):
         return f'{self.second_name}, {self.first_name}, {self.work_experience}, {self.price}'
 
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.PROTECT)
+    driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
+    total_price = models.DecimalField(
+        null=False, blank=False, max_digits=7, decimal_places=2, default=0.0, verbose_name='Total Price'
+    )
+    total_hours = models.IntegerField(default=0, verbose_name='Total hours')
+    is_approved = models.BooleanField(null=False, blank=False, default=False, verbose_name='Is Approved')
+    is_pending = models.BooleanField(null=False, blank=False, default=True, verbose_name='Is Pending')
+    is_canceled = models.BooleanField(null=False, blank=False, default=False, verbose_name='Is Canceled')
+    cancel_description = models.TextField(
+        null=False, blank=False, default='Reason of cancellation:', max_length=500, verbose_name='Cancel description'
+    )
+    start_date = models.DateField()
+    end_date = models.DateField()
 
-# class Order(models.Model):
-#     pass
+    def get_absolute_url(self):
+        return reverse('profile-orders', kwargs={'pk': self.user.id})
+
